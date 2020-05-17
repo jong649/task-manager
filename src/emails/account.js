@@ -1,14 +1,7 @@
 const sgMail = require("@sendgrid/mail");
 
-<<<<<<< HEAD
 const sendGridAPIKey = process.env.SENDGRID_API_KEY;
 sgMail.setApiKey(sendGridAPIKey);
-=======
-const sendgridAPIKey =
-  "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";
-
-sgMail.setApiKey(sendgridAPIKey);
->>>>>>> 9b7fd6b... add welcome and cancellation email functions
 
 const sendWelcomeEmail = (email, name) => {
   sgMail.send({
