@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const sharp = require("sharp");
+const crypto = require("crypto");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 const {
@@ -62,6 +63,22 @@ router.post("/users/logoutAll", auth, async (req, res) => {
 
 router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
+});
+
+router.post("/users/forgotpassword", async (req, res) => {
+  try {
+    console.log(req.body);
+    const user = await User.findOne({ email: req.body.email });
+    user.recoveryToken = crypto.randomBytes(20).toString("hex");
+    console.log(user);
+    if (!user) {
+      res.status(500).send();
+      return false;
+    }
+    res.send(user);
+  } catch (error) {
+    res.status(500).send();
+  }
 });
 
 router.patch("/users/me", auth, async (req, res) => {

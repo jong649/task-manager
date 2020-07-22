@@ -54,6 +54,9 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: Buffer,
     },
+    recoveryToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,

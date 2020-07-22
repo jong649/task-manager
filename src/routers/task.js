@@ -8,6 +8,7 @@ router.post("/tasks", auth, async (req, res) => {
     ...req.body,
     owner: req.user._id,
   });
+  console.log(req.body);
 
   try {
     await task.save();
