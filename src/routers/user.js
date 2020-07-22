@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 const {
   sendWelcomeEmail,
   sendCancellationEmail,
+  sendPasswordRecoveryEmail,
 } = require("../emails/account");
 const router = new express.Router();
 
@@ -69,12 +70,33 @@ router.post("/users/forgotpassword", async (req, res) => {
   try {
     console.log(req.body);
     const user = await User.findOne({ email: req.body.email });
-    user.recoveryToken = crypto.randomBytes(20).toString("hex");
-    console.log(user);
+
     if (!user) {
       res.status(500).send();
       return false;
     }
+    user.recoveryToken = crypto.randomBytes(20).toString("hex");
+    await user.save();
+    sendPasswordRecoveryEmail(user.email, user.recoveryToken);
+    console.log(user);
+    res.send(user);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
+router.post("/users/recoverpassword", async (req, res) => {
+  try {
+    console.log(req.body);
+    const user = await User.findOne({ recoveryToken: req.body.recoveryToken });
+
+    if (!user) {
+      res.status(500).send();
+      return false;
+    }
+
+    user.password = req.body.newPassword;
+    user.save();
     res.send(user);
   } catch (error) {
     res.status(500).send();

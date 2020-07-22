@@ -21,7 +21,18 @@ const sendCancellationEmail = (email, name) => {
   });
 };
 
+const sendPasswordRecoveryEmail = (email, recoveryToken) => {
+  sgMail.send({
+    to: email,
+    from: "jong649@gmail.com",
+    subject: "Password Recovery",
+    text: `Please follow this link to update your forgotten password: \n
+           http://localhost:3001/reset/${recoveryToken}`,
+  });
+};
+
 module.exports = {
   sendWelcomeEmail,
   sendCancellationEmail,
+  sendPasswordRecoveryEmail,
 };
