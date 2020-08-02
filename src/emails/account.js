@@ -27,7 +27,7 @@ const sendPasswordRecoveryEmail = (email, recoveryToken) => {
     from: "taskerino.noreply@gmail.com",
     subject: "Password Recovery",
     text: `Please follow this link to update your forgotten password: \n
-           http://localhost:3001/reset/${recoveryToken}`,
+           https://taskerino.herokuapp.com/reset/${recoveryToken}`,
   });
 };
 
